@@ -8,15 +8,22 @@ import os
 import logging
 from viewhandler.page_blueprint import page
 
+
+
 logging.basicConfig(level=logging.INFO)
 
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
+
 @app.context_processor
-def common():
-    return {'title' : u'你不懂'}
+def common_title():
+    return {
+        'title' : u'大数据可视化',
+        'baseurl' : 'localhost:8000',
+        'isLogin' : False
+    }
 
 
 '所有蓝图'
@@ -50,21 +57,21 @@ def bootstrap(app):
 
 
 
-    @app.after_request
-    def after_request(response):
-
-        cors_origins = ['http://seed-dev.oa.com']
-        if request.referrer:
-            # 允许前端跨域请求域名
-            for origin in cors_origins:
-                if request.referrer.count(origin) > 0:
-                    response.headers.add('Access-Control-Allow-Origin', origin)
-                    break
-
-        response.headers.add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Credentials, Methods")
-        response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response
+    # @app.after_request
+    # def after_request(response):
+    #
+    #     cors_origins = ['http://localhost:8000', 'http://127.0.0.1:8000']
+    #     if request.referrer:
+    #         # 允许前端跨域请求域名
+    #         for origin in cors_origins:
+    #             if request.referrer.count(origin) > 0:
+    #                 response.headers.add('Access-Control-Allow-Origin', origin)
+    #                 break
+    #
+    #     response.headers.add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Credentials, Methods")
+    #     response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    #     response.headers.add('Access-Control-Allow-Credentials', 'true')
+    #     return response
 
 
 

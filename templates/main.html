@@ -1,11 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>首页</title>
 
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %} {{title}} {% endblock %}
+
+{% block contain %}
+
+<div class="container">
+
+    <input id="sdate" class="date">
+    <input id="edate" class="date">
+
+    <div id="chart_1" class="table-letter table-dsu"></div>
+    <div id="chart_2" class="table-letter table-dsu"></div>
+</div>
+
+
+{% endblock %}
+
+
+{% block userjs %}
+
+
+    <script src="/static/js/main.js"></script>
+
+{% endblock%}

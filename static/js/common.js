@@ -1,50 +1,76 @@
 
 
 
+function init_date(chartlist){
 
-function init_date(date_id, func){
-
-    $("#"+date_id).jeDate({
+    $("#sdate").jeDate({
         isinitVal:true,
-        minDate:"1900-01-01",
+        minDate:"1970-01-01",
         format:"YYYY-MM-DD",
         festival: true,
-        choosefun: function(elem,date){
+        choosefun: function(elem, date){
             var sdate = $("#sdate").val();
             var edate = $("#edate").val();
-            func(sdate, edate);
+
+            chartlist.forEach(function(value, index, array){
+                var dims = value["dims"];
+                var item = value["elemid"];
+                flushChart(sdate, edate, dims, item);
+            });
         }
     })
 
-    return $("#"+date_id).val()
+    $("#edate").jeDate({
+        isinitVal:true,
+        minDate:"1970-01-01",
+        format:"YYYY-MM-DD",
+        festival: true,
+        choosefun: function(elem, date){
+            var sdate = $("#sdate").val();
+            var edate = $("#edate").val();
+
+            chartlist.forEach(function(value, index, array){
+                var dims = value["dims"];
+                var item = value["elemid"];
+                flushChart(sdate, edate, dims, item);
+            });
+        }
+    })
 }
 
+function flushChart(sdate, edate, dims, elem){
 
-
-
-function chart_init(elem){
-    //
-    var myChart = echarts.init(document.getElementById(elem));
-
-}
-
-
-function get_data(sdate, edate, dims, elem){
-
-    var url = "127.0.0.1:8000/getdata/";
+    var url = "/page/getdata";
     var params = {
         sdate : sdate,
         edate : edate,
         dims : dims
     };
 
-    $.get(url, params, function(json_data){
+    console.log(sdate);
+    console.log(edate);
+    console.log(dims);
+    console.log(elem);
+    console.log(url);
+    $.getJSON(url, params, function(json_data){
 
         if (json_data["code"]==0){
             chartSetData(elem, json_data['data'])
         }
     });
 
+
+
+}
+
+
+function chart_init(chartlist){
+    //
+    chartlist.forEach(function(value, index, array){
+        var elem = value['elemid'];
+        console.log(elem)
+        echarts.init(document.getElementById(elem));
+    });
 }
 
 function chartSetData(elem, data){
@@ -77,17 +103,6 @@ function chartSetData(elem, data){
         };
 
     chart.setOption(option);
-}
-
-
-function flushChart(elem){
-
-    var dims = '1atr'
-    var sdate = $("#sdate").val();
-    var edate = $("#edate").val();
-
-
-    get_data(sdate, edate, dims, elem)
 }
 
 

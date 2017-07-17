@@ -7,7 +7,7 @@ from datetime import timedelta
 """
 run host and port
 """
-APP_HOST = '127.0.0.1'
+APP_HOST = 'localhost'
 APP_PORT = 8000
 DEBUG = True
 
