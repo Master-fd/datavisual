@@ -5,7 +5,7 @@
 
 
 
-from connect import db_redis,  db_mysql
+from connect import db_redis,  db_mysql, db_mongo
 from logger import logger
 
 
@@ -13,12 +13,12 @@ from logger import logger
 class BaseModel(object):
 
     redis_db = db_redis.Connection(host=config.REDIS_HOST, port=config.REDIS_PORT)
-    pg_old_db = db_postgresql.Connection(host=config.PG_DB_OLD_HOST, port=config.PG_DB_OLD_PORT, user=config.PG_DB_OLD_USER, password=config.PG_DB_OLD_PSWD, database=config.PG_DB_OLD_NAME, is_return_res=False)   #旧的GPV, user info信息数据库
     mysql_db = db_mysql.Connection(host=config.MYSQL_HOST, port=config.MYSQL_PORT, user=config.MYSQL_USER, password=config.MYSQL_PASSWD, database=config.MYSQL_DB, charset='utf8', is_return_res=False)
-
+    mongo_db = db_mongo.Connection(host=config.mongo, port=)
     def __init__(self, fbusiness_id=None):
 
         self.redis_timeout = 60*60*24  #缓存时间
+
 
 
     '专门用于生成redis的key'

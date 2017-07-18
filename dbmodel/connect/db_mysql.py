@@ -21,7 +21,7 @@ class Connection(object):
     password ： 密码
     timeout : sql执行超时时间
     '''
-    def __init__(self, host, port, database, user, password, charset, is_return_res=False):
+    def __init__(self, host, port, database, user, password, charset):
 
         self.host = host
         self.database = database
@@ -29,7 +29,6 @@ class Connection(object):
         self.password = password
         self.port = port
         self.charset = charset
-        self.is_return_res = is_return_res
 
 
     def query_one_dict(self, sql=None, params=None):
@@ -37,14 +36,11 @@ class Connection(object):
         获取单行数据，返回字典
         :return: dict
         '''
-        datas, exe_res, msg = self.execute_query(sql=sql, params=params)
-        if self.is_return_res:
-            if len(datas) >= 1:
-                return datas[0], exe_res, msg
-            else:
-                return {}, exe_res, msg
+        datas = self.execute_query(sql=sql, params=params)
+        if datas:
+            return datas[0]
         else:
-            return datas[0] if datas else {}
+            return {}
 
 
     def query_list(self, sql=None, params=None):
@@ -53,11 +49,8 @@ class Connection(object):
         :param sql: str
         :return: list
         '''
-        datas, exe_res, msg =  self.execute_query(sql=sql, params=params)
-        if self.is_return_res:
-            return datas, exe_res, msg
-        else:
-            return datas
+        datas =  self.execute_query(sql=sql, params=params)
+        return datas
 
     def execute_commit(self, sql=None, is_return=False):
         """
@@ -68,52 +61,15 @@ class Connection(object):
             logger.info('MYSQL_SQL = {}'.format(sql))
             with conn.cursor() as cursor:
                 cursor.execute(sql)
-                if is_return:
-                    cursor.execute('select LAST_INSERT_ID() as id') #返回自增id
-                    temp = cursor.fetchone()
-                else:
-                    temp = {}
             conn.commit()
-            if self.is_return_res:
-                return temp, True, '执行成功' if is_return else True, True, '执行成功'
-            else:
-                return temp if is_return else True
+            return True
         except Exception as e:
             logger.error('''MYSQL_SQL 执行失败-{}
                             SQL 语句 -- {}'''.format(e, sql))
             conn.rollback()
-            if self.is_return_res:
-                return {}, False, '执行异常--{}'.format(e)if is_return else False, False, '执行异常'
-            else:
-                return {} if is_return else False
+            return False
         finally:
             conn.close()
-
-    def execute_commit_list(self, sql_list=None):
-        """
-        执行多条sql 比如update, insert, delete等操作
-        """
-        conn = pymysql.connect(host=self.host, port=self.port, user=self.user, password=self.password, db=self.database, charset=self.charset, cursorclass=pymysql.cursors.DictCursor)  #建立连接
-        try:
-
-            if not isinstance(sql_list, (tuple, list)):
-                sql_list = [sql_list]
-
-            record_sql = None
-            with conn.cursor() as cursor:
-                for sql in sql_list:
-                    logger.info('MYSQL_SQL = {}'.format(sql))
-                    record_sql = sql
-                    cursor.execute(sql)
-            conn.commit()
-            return True, True, '执行成功' if self.is_return_res else True
-        except Exception as e:
-            logger.error('''MYSQL_SQL 执行失败-{}
-                            SQL 语句 -- {}'''.format(e, record_sql))
-            conn.rollback()
-            return False, False, '执行异常--{}'.format(e) if self.is_return_res else False
-        finally:
-            conn.close()  #关闭连接
 
     def execute_query(self, sql=None, params=None):
         '''
@@ -134,17 +90,13 @@ class Connection(object):
                 else:  #不带参数，直接执行sql
                     cursor.execute(sql)
                 datalist = cursor.fetchall()
-            if len(datalist)>50: #查询的数据太长了，不要打印log，方便查看
-                logger.info('MYSQL_SQL 查询结果长度{} 显示缩略版 = {}'.format(len(datalist), datalist[0]))
-            else:
-                logger.info('MYSQL_SQL 查询结果 = {}'.format(datalist))
 
-            return list(datalist), True, 'SQL执行成功'
+            return list(datalist)
         except Exception as e:
             conn.rollback()
             logger.error('''MYSQL_SQL 执行失败 - {}
                             SQL 语句 -- {}'''.format(e, sql))
-            return [], False, 'SQL执行异常--{}'.format(e)
+            return []
         finally:
             conn.close()
 
