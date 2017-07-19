@@ -5,7 +5,7 @@
 
 
 from baseControl import BaseControl
-from flasktest.common.reponse import Responses
+
 
 class DataContral(BaseControl):
 
@@ -19,7 +19,7 @@ class DataContral(BaseControl):
             ],
             'title' : "显示测试"
         }
-        return Responses.responseJson(Responses.SUCCESS, data=data)
+        return self.responseJson(self.ErrorCode.SUCCESS, data=data)
 
 
 

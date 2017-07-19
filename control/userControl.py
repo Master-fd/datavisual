@@ -4,8 +4,8 @@
 '''
 
 import logging
-from flasktest.common.reponse import Responses
-from flasktest.control.baseControl import BaseControl
+from common.reponse import Responses
+from control.baseControl import BaseControl
 
 
 
@@ -29,4 +29,8 @@ class UserControl(BaseControl):
         return Responses.responseJson(Responses.SUCCESS)
 
 
+if __name__ == '__main__':
+
+    db = UserControl()
+    db.login()
 

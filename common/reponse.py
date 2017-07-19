@@ -4,14 +4,16 @@
 '''
 
 
-
-
-class Responses(object):
-
+class ErrorCode(object):
     SUCCESS                 = 0
     ERROR                   = -1
     AUTH_FAIL               = -2
     NO_LOGIN                = -3
+
+
+class Responses(ErrorCode):
+
+
 
 
     @classmethod
