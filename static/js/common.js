@@ -40,7 +40,7 @@ function init_date(chartlist){
 
 function flushChart(sdate, edate, dims, elem){
 
-    var url = "/page/getdata";
+    var url = "/data/getdata";
     var params = {
         sdate : sdate,
         edate : edate,
@@ -73,6 +73,7 @@ function chart_init(chartlist){
     });
 }
 
+
 function chartSetData(elem, data){
 
 
@@ -93,10 +94,10 @@ function chartSetData(elem, data){
             },
             tooltip: {},
             legend: {
-                data: names //['销量']
+                data: names
             },
             xAxis: {
-                data: xAxis //["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                data: xAxis
             },
             yAxis: {},
             series: series
@@ -106,6 +107,51 @@ function chartSetData(elem, data){
 }
 
 
+function checkislogin(){
 
+    if (isLogin==true){
+        $("#btn").text('注销');
+    }else{
+        $("#btn").text('登录');
+    }
+
+}
+
+
+function login(){
+
+    $("#btn").click(function (){
+
+        var elem = $(this);
+
+        if (elem.text()=='登录'){
+
+            var params = {
+                account : $("#account").val(),
+                password : $("#password").val()
+            };
+            var url = '/user/login';
+            $.post(url, params, function(json_data){
+
+                if (json_data.code==0){
+                    elem.text("注销");
+                }else{
+                    alert(json_data.msg);
+                }
+            });
+        }else{
+            var url = '/user/logout';
+            $.post(url, {}, function(json_data){
+
+                if (json_data.code==0){
+                    elem.text("登录");
+                }else{
+                    alert(json_data.msg);
+                }
+            });
+        }
+
+    });
+}
 
 

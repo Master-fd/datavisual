@@ -3,11 +3,12 @@
 
 '''
 
-from flask import Flask, request, g
+from flask import Flask, request, g, session
 import os
 import logging
 from viewhandler.page_blueprint import page
-
+from viewhandler.user_blueprint import user
+from viewhandler.data_blueprint import data
 
 
 logging.basicConfig(level=logging.INFO)
@@ -16,19 +17,18 @@ logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
-
 @app.context_processor
 def common_title():
+    isLogin = True if 'account' in session else False
     return {
         'title' : u'大数据可视化',
-        'baseurl' : 'localhost:8000',
-        'isLogin' : False
+        'isLogin' : isLogin
     }
 
 
 '所有蓝图'
 BLUEPRINTS = [
-    page
+    page, user, data
 ]
 
 

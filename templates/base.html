@@ -7,17 +7,15 @@
     <link rel="stylesheet" href="/static/plugin/jeDate/stylesheets/stylesheet.css">
     <link rel="stylesheet" href="/static/plugin/jeDate/stylesheets/normalize.css">
     <link rel="stylesheet" href="/static/plugin/jeDate/stylesheets/github-light.css">
-    <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
     <link rel="stylesheet" href="/static/css/main.css">
     <script type="text/javascript">
         var isLogin={{ isLogin|tojson}};       //服务器渲染是否已经login
-        var baseurl = {{ baseurl|tojson }};   //请求基地址
 
+        console.log(isLogin);
     </script>
 </head>
 <body>
     {% include 'head.html' %}
-    {% include 'leftnav.html' %}
     {% block contain %}
 
 
@@ -25,7 +23,6 @@
     {% endblock %}
     <script src="/static/plugin/echarts-3.6.2/dist/echarts.js"></script>
     <script src="/static/plugin/jquery-2.1.4/jquery.js"></script>
-    <!--<script src="/static/plugin/jeDate/jedate/jquery-1.7.2.js"></script>-->
     <script src="/static/plugin/jeDate/jedate/jquery.jedate.js"></script>
 
     <script src="/static/js/common.js"></script>
