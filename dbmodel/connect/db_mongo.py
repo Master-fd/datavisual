@@ -16,7 +16,7 @@ class Connection(object):
         self.database = database
         self.port = port
         self.conn = MongoClient(host=self.host, port=self.port)
-        self.db = eval('self.conn.'+database)
+        self.mongo = eval('self.conn.'+database)
 
 
 

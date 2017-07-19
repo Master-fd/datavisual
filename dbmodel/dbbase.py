@@ -15,11 +15,12 @@ class BaseModel(object):
 
     redis_db = db_redis.Connection(host=config.REDIS_HOST, port=config.REDIS_PORT)
     mysql_db = db_mysql.Connection(host=config.MYSQL_HOST, port=config.MYSQL_PORT, user=config.MYSQL_USER, password=config.MYSQL_PASSWD, database=config.MYSQL_DB, charset='utf8')
-    mongo_db = db_mongo.Connection(host=config.MONGODB_HOST, port=config.MONGODB_POST)
+    mongo_db = db_mongo.Connection(host=config.MONGODB_HOST, port=config.MONGODB_PORT)
+
+
     def __init__(self, fbusiness_id=None):
 
         self.redis_timeout = 60*60*24  #缓存时间
-
 
 
     '专门用于生成redis的key'
