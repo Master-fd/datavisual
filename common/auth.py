@@ -4,7 +4,7 @@
 '''
 
 
-from flasktest.common.reponse import Responses
+from common.reponse import Responses
 import flask
 from flask import session
 

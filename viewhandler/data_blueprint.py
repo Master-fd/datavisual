@@ -12,7 +12,7 @@ data = Blueprint('data', __name__, url_prefix='/data')
 
 
 @data.route('/getdata/')
-@auth.login_require
+# @auth.login_require
 def getdata():
 
     datacontrol = DataContral(requestargs=g.args, session=session)

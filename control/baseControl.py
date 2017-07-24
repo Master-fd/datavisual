@@ -15,7 +15,7 @@ class BaseControl(object):
         self.ErrorCode = ErrorCode
 
 
-    def responseJson(self, code, data, msg):
+    def responseJson(self, code=0, data={}, msg=''):
 
         return Responses.responseJson(code=code, data=data, msg=msg)
 
